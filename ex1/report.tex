@@ -23,18 +23,40 @@
 \maketitle
 \section{Strongly connected components and strongly connected graphs}
 \subsection*{i}
+Since v and w are mutually reachable then we have a path from v to w and a path from w to v. \\
+Since w and x are mutually reachable then we have a path from w to x and a path from x to w.\\
+For v and x to be mutually reachable we need:\\
+\indent A path from v to x (1) \\ 
+\indent A path from x to v (2) \\
+We get (1) by using the path from v to w and then the path from w to x. \\
+We get (2) by using the path from x to w and then the path from w to v.
+
 \subsection*{ii}
+Since X is the strongly connected component of v there is a path from v to w and also a path from w to v for all $w \in X$. That is, v and w are mutually reachable for all $w \in X$. By i) we then have that all pairs of vertices in X are mutually reachable so for all $w \in X$, X is at least a subset of the strongly connected component for w. \\
+If there was a vertex that was in the strongly connected component of w but not in X then there would be a path from u to v and v to u and by i) u would then be in X which is a contradiction. \\
+That means that X is exactly the strongly connected component of w.
 \subsection*{iii}
+1) Keep a list of visited vertices. \\
+2) From v, visit all unvisited vertices, u, if there is an edge (v,u), and mark them as visited. \\
+3) Repeat for newly visited vertices recursively until stops. \\
+4) The desired set is the list of visited vertices\\
+\\
+This algorithm uses each edge and vertex at most once so it is $O(n + m)$.
+
 \subsection*{iv}
+Turn the direction of all arrows in A around and run iii)
 \subsection*{v}
+For any vertex $v \in V$ run both iii) and iv). If they both give V then the graph is strongly connected, otherwise not.
 \subsection*{vi}
+For a DAG you never have, for a pair of vertices, v and u, both a path from v to u and a path from u to v, so the strongly connected components are the vertices themselves, assuming that a vertex is strongly connected to itself.
 
 \section{A stable marriage for Eric and Ariel?}
+Suppose you can arrange things so that they are not matched. Then you have a mermaid, X, and a merman, Y, that give us the blocking pair (Y, Ariel) and (Eric, X) since Ariel prefers Eric over all others and therefore Y, and Eric prefers Ariel over all others and therefore X. \\
+This contradicts the fact that the Gale-Shapley algorithm returns a stable matching, so they must be matched.
 
 \section{Weak/strong stable marriages}
 \subsection*{a) Strong instability}
-hello
-hello 2
+
 \subsection*{b) Weak instability}
 
 \section{Topological sort}
