@@ -16,7 +16,7 @@
 \pagestyle{fancy}
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
-\author{Authors}
+\author{Siggi Arnason (5961181) \\ Victor Petren Bach Hansen (5990025)}
 \title{Algorithms \& Networks \\ Exercise 1}
 \lhead{Algorithms \& Networks}
 \rhead{Exercise 1}
@@ -73,26 +73,6 @@ Any set of men and women that are completely indifferent to the matching will al
 For example a set of two men and two women where both men and both women are indifferent to the other sex.
 
 \section{Topological sort}
-L $\leftarrow$ Empty list that will contain the sorted elements\\
-S $\leftarrow$ Set of all nodes with no incoming edges\\
-\textbf{while} S is non-empty \textbf{do}\\
-\indent remove a node n from S\\
-\indent add n to tail of L\\
-\indent \textbf{for each }node m with an edge e from n to m \textbf{do}\\
-\indent \indent remove edge e from the graph\\
-\indent \indent \textbf{if} m has no other incoming edges \textbf{then}\\
-\indent \indent \indent insert m into S\\
-\textbf{if} graph has edges \textbf{then}\\
-\indent \textbf{return} error (graph has at least one cycle)\\
-\textbf{else} \\
-\indent return L (a topologically sorted order)\\
-
-There is always at least one node in S in the beginning since the graph is a DAG and
-S is only empty when all the nodes have been moved to L. \\
-While S is not empty each iteration of the while loop moves a node from S to L and L keeps a topological order since only nodes with no incoming edges are added to L and therefore a node can never be added before it's predecessor.\\
-Finding the initial S is O(n), the while loop removes a node in every loop so it is goes n loops, and the for each loop goes in total once for each edge so it goes m loops in total. That means that the algorithm is O(n+m).
-
-\subsection{Alternative approach}
 As the hint suggests, we will describe an algorithm that uses a depth-first search. We start by describing this DFS algorithm:\\
 
 \begin{algorithm}[H]
@@ -106,13 +86,14 @@ As the hint suggests, we will describe an algorithm that uses a depth-first sear
     \Do{$u \not = \emptyset$}{
       \eIf{$u$ has an unmarked and unvisited neighbor $n$}{
         mark $n$ as visited\;
-        push $u$ to $S$
+        push $u$ to $S$\;
         $u$ = $n$
       }{
         set $u$ as marked and append it to the tail of $L$\;
         pop from $S$ and set it to $u$
       }
     }
+    \caption{DFS}
   }
 \end{algorithm}
 The result of running the above DFS algorithm is a list with the order that the vertices were marked in. An algorithm for computing a topological sort of $G$, would then be to simply reverse the resulting list from running DFS on $G$:\\
@@ -123,6 +104,7 @@ The result of running the above DFS algorithm is a list with the order that the 
   Initialize empty list $L$\;
   $L$ = DFS($G$)\;
   $L$ = reverse($L$)
+  \caption{Topological Sort}
 \end{algorithm}
 
 The running time of this algorithm would then be $O(n+m)$ since it visits every edge and vertex atmost once and reversing the list can be done in linear time.\\
@@ -130,7 +112,6 @@ The running time of this algorithm would then be $O(n+m)$ since it visits every 
 In order to prove the correctness of the algorithm, it should be suficient to prove that if there is and edge $(u,v)\in E$, then $u$ is only marked after $v$. Take the case where the DFS algorithm considers the edge $(u,v)$. At this point $v$ cannot be set to visited, since this would mean that $v$ is an ancestor to $u$, which means that it is either marked or unmarked. If $v$ is marked, then $u$ will be marked after $v$ for sure, affirming the topological sorted order, and if $v$ is unmarked,
 it will at some point be popped before $u$ from the stack, and therefore also marked before, again affirming the topological sorted order we wanted to maintain.
 \section{Bonus question}
-
 $M_1: anything $ \\
 $M_2: W_1 > W_2 > W_3$\\
 $M_2: W_2 > W_1 > W_3$\\\\
