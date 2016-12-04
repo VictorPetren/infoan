@@ -10,8 +10,10 @@
 \usepackage[table]{colortbl}
 \usepackage{fancyhdr}
 \usepackage[linesnumbered, ruled]{algorithm2e}
+\usepackage{graphicx}
 \SetKwRepeat{Do}{do}{while}%
 \usepackage[margin=2.5 cm]{geometry}
+
 
 \pagestyle{fancy}
 \cfoot{Page \thepage\ of \pageref{LastPage}}
@@ -128,7 +130,51 @@ We can call this newly obtained graph $G'=(V', E')$, which has the size $|V'|=2|
 \subsection{}
 
 \section{Modelling phasing out capital equipment}
+Infinite capacity for all edges. Lower bounds $l(d_1)$, ..., $l(d_p)$ shown on graph. $s_{p+1}$ is the price in the end of year p. Run minimum cost flow algorithm for the number of ships the company has in the beginning.\\
+\includegraphics[width=\textwidth]{nr5graph}
 
 \section{Bonus question: Spacecraft computer games}
-
+We look at the corridor as a grid system and treat it as a graph G(V,E). We modify Dijkstra's algorithm so that the distance from the source to a vertex v is the number of towers that needs to be destroyed to travel that path. We keep track of what towers the shortest known path to a vertex needed to be destroyed with $destroyedTowers$. \\
+After the algorithm is run, dist[end vertex] gives the minimum number of towers that need to be destroyed to get there and destroyedTowers[end vertex] gives the vertices that need to be destroyed.
+\begin{algorithm}[H]
+  \KwData{Graph $G(V,E)$, starting vertex $source$}
+  \KwResult{The minimum number of towers the need to be destroyed to get from $source$ to each vertex, and the towers that need to be destroyed. }
+  
+  create vertex set $Q$\;
+  \ForEach{vertex $v$ in $Graph$}{
+  	$dist[v]$ = INFINITY\;
+  	$destroyedTowers[v]$ = EMPTY SET\;
+  	$guardingTowers[v]$ = EMPTY SET\;
+  	add $v$ to $Q$\;
+  }
+  
+  \ForEach{vertex $v$ in $Graph$}{
+  	\If{$v$ has a tower}{
+  		$guardingTowers[v].add(v)$\;
+  		\ForEach{vertex $u$ within tower range from $v$}{
+			$guardingTowers[u].add(v)$\;	
+  		}
+  	}
+  }
+  
+  $dist[source]$ = 0\;
+  \While{$Q$ is not empty}{
+  	$u$ = vertex in $Q$ with min $dist[u]$\;
+  	remove $u$ from $Q$\;
+  	
+  	\ForEach{neighbor $v$ of $u$}{
+  		$altDestroyedTowers$ = $unionSet(destroyedTowers[u],guardingTowers[v])$\;
+  		$alt$ = size of $altDestroyedTowers$\;
+  		\If{$alt < dist[v]$}{
+  			$dist[v]$ = $alt$\;
+  			$destroyedTowers[v]$ = $altDestroyedTowers$\;
+  		}
+  	}
+  }
+  	\Return{dist, destroyedTowers}
+    
+  \caption{Modified Dijkstra}
+\end{algorithm}
+~\newline
+A normal Dijkstra algorithm runs in $O(|V|^2)$. In this version, every time a new distance is calculated we have to find a union of two sets which are both of size less than $|V|$, because towers are at most $|V|$, so the union can be found in $O(|V|)$ using a hash table. Therefore the running time is $O(|V|^3)$.
 \end{document}
