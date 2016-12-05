@@ -124,11 +124,22 @@ The method of solving the maximum flow problem with lower bounds on capacities, 
 Step 1 and 2 both takes $\mathcal{O}(1)$ time, step 3 takes $\mathcal{O}(m)$ time, step 4 takes $\mathcal{O}(n^3)$ time, step 5 and 6 both take $\mathcal{O}(1)$ time, step 7 and 8 takes $\mathcal{O}(n^3)$ time and step 9 takes $\mathcal{O}(1)$. This gives us a total running time of $\mathcal{O}(n^3+m)$ time.
 \section{Escape problem}
 \subsection{}
-We can restructure the graph $G=(V,E)$, so it becomes a question of solving the ordinary max-flow problem. In order to do this, we can eliminate the vertex capacities by, for each vertex, introduce another vertex and edge, such that for a vertex $v_i$ with incomming edge $(l,i)$ and outgoing edge $(i,k)$, we get vertices $v_{i1}$ and $v_{i2}$ and edges $(l,i1)$, $(i1,i2)$, $(i2,l)$.
+We can restructure the graph $G=(V,E)$, so it becomes a question of solving the ordinary max-flow problem. In order to do this, we can eliminate the vertex capacities by, for each vertex, introduce another vertex and edge, such that for a vertex $v_i$ with incomming edges $(l_1,i), \ldots, (l_x)$  and outgoing edges $(i,k_1),\ldots, k_y$, we get vertices $v_{i1}$ and $v_{i2}$ and edges $(l,i1)$, $(i1,i2)$, $(i2,l)$.
 
 We can call this newly obtained graph $G'=(V', E')$, which has the size $|V'|=2|V|= \mathcal{O}(n)$ and $|E'|=|V|+|E|=\mathcal{O}(n+m)$.
 \subsection{}
-
+We propose the following algorithm to solve the escape problem:
+\begin{enumerate}
+  \item Add supersource $s$ and connect it to the $m$ starting points
+  \item Add supersink $t$ and connect it to the $4(n-2)+4=4n-4$ possible end points
+  \item Let undirected edges become directed, one in each directed. e.g. for each undirected edge $(i,j)\in E$, we get the directed edges $(i,j)$ and $(j,i)$.
+  \item Assign a capacity of $1$ to all edges and vertices
+  \item Use the graph restructuring method described previously to obtain an ordinary max flow problem
+  \item Solve the max flow problem with your favorite max-flow algorithm
+  \item If the resulting flow $f$ is equal to $m$, then the flow will correspond to a solution to the escape problem
+\end{enumerate}
+The problem can be solved using the Edmonds-Karp algorithm, which runs in $\mathcal{O}(VE^2)$ time. In our problem, we have that the number of edges is: $m$ from the source to the starting points, $4n-4$ from the endpoints to the sink, $2(2n^2-2n)$ edges inside the grid in the directed case, which gives a total of $\mathcal{O}(n^2)$ edges. The total number of vertices are $n^2+2=\mathcal{O}(n^2)$. With the Edmonds-Karp algorithm, the total runtime then becomes
+$\mathcal{O}(VE^2)=\mathcal{O}(n^2n^{2^2})=\mathcal{O}(n^6)$
 \section{Modelling phasing out capital equipment}
 Infinite capacity for all edges. Lower bounds $l(d_1)$, ..., $l(d_p)$ shown on graph. $s_{p+1}$ is the price in the end of year p. Run minimum cost flow algorithm for the number of ships the company has in the beginning.\\
 \includegraphics[width=\textwidth]{nr5graph}
