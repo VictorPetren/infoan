@@ -1,0 +1,74 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{lastpage}
+\usepackage{pdfpages}
+\usepackage{fancyvrb}
+\usepackage[table]{colortbl}
+\usepackage{fancyhdr}
+\usepackage[linesnumbered, ruled]{algorithm2e}
+\usepackage{graphicx}
+\SetKwRepeat{Do}{do}{while}%
+\usepackage[margin=2.5 cm]{geometry}
+
+
+\pagestyle{fancy}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\author{Sigurdur Oli Arnason (5961181) \\ Victor Petren Bach Hansen (5990025)}
+\title{Algorithms \& Networks \\ Exercise 2}
+\lhead{Algorithms \& Networks}
+\rhead{Exercise 2}
+
+\begin{document}
+\maketitle
+\section{Lift Scheduling}
+
+\subsection*{i)}
+Create a strongly connected digraph with vertices $a_1, a_2, ..., a_k$, one for each AGV, and one vertex $a_0$ representing the starting position with $f_o(a_0) = f_d(a_0) = 1$. Define distances as such: \\
+$d(a_i, a_j) = 0$ if $f_d(a_i) = f_o(a_j)$ or $j = 0$ \\
+$d(a_i, a_j) = t_0 + t_1|f_d(a_i) - f_o(a_j)|$ otherwise \\
+
+\subsection*{ii)}
+Build queues for the floors with an operator to remove a set of vertices from a queue.\\
+Change slide 29 in Introduction to Exact Exponential-Time Algorithms slides to:\\
+If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$
+\subsection*{iii)}
+while(some floor is blocked)\\
+\indent flag = false\\
+\indent for each(blocked floor f)\\
+\indent \indent if (first on f going to non-blocked floor) \\
+\indent\indent\indent f.pop \\
+\indent\indent\indent flag = true \\
+\indent\indent\indent break \\
+\indent\indent endif\\
+\indent endfor\\
+\indent if ( flag == false ) \\
+\indent\indent return false \\
+\indent endif\\
+endwhile \\
+return true
+\subsection*{iv)}
+Define operation blocked(f,Q) which returns true if floor f where exactly the AGVs in queue Q are on the floor is blocked, and false otherwise. \\
+If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$ and $ \lnot blocked(f_o(v), queue(f_o(v))\setminus(S \setminus \{v\})$
+\subsection*{v)}
+
+\section{Maximum Flow by Scaling}
+\subsection*{1)}
+A cut can be across at most $|E|$ edges, each edge has max capacity C so any cut has max capacity $C|E|$.
+\subsection*{2)}
+Form a graph $G = (E',V), \forall e\in E': c(e)\geq K$ \\
+Find any path from s to t.
+\subsection*{3)}
+\subsection*{4)}
+
+\subsection*{5)}
+\subsection*{6)}
+\subsection*{7)}
+
+\section{Bonus/Research Question: NP-Completeness of lift scheduling}
+
+\end{document}
