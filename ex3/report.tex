@@ -19,7 +19,7 @@
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \author{Sigurdur Oli Arnason (5961181) \\ Victor Petren Bach Hansen (5990025)}
-\title{Algorithms \& Networks \\ Exercise 2}
+\title{Algorithms \& Networks \\ Exercise 3}
 \lhead{Algorithms \& Networks}
 \rhead{Exercise 2}
 
@@ -28,14 +28,22 @@
 \section{Lift Scheduling}
 
 \subsection*{i)}
-Create a strongly connected digraph with vertices $a_1, a_2, ..., a_k$, one for each AGV, and one vertex $a_0$ representing the starting position with $f_o(a_0) = f_d(a_0) = 1$. Define distances as such: \\
-$d(a_i, a_j) = 0$ if $f_d(a_i) = f_o(a_j)$ or $j = 0$ \\
-$d(a_i, a_j) = t_0 + t_1|f_d(a_i) - f_o(a_j)|$ otherwise \\
+In the original TSP it doesn't matter how long the salesman stays in each town. Here the task at hand in each town is moving the robot between two floors and optimizing how to move between these tasks is the traveling problem. We define the distance between two tasks, i and j, as the time it takes to go from the final destination of i to the original position of j. Like the salesman can start in his hometown we start in a state which we simulate as a task with final destination 1. In this problem we don't care about going back to floor 1 after completing all the tasks so we define the distance from any task to the starting one as 0. \\
+We create a strongly connected digraph with vertices $a_1, a_2, ..., a_k$, one for each AGV, and one vertex $a_0$ representing the starting position with $f_o(a_0) = f_d(a_0) = 1$. The distances are formally defined like this: \\
+\[
+d(a_i, a_j) = 0 \textrm{ if } f_d(a_i) = f_o(a_j) \textrm{ or } j = 0
+\]
+\[
+d(a_i, a_j) = t_0 + t_1|f_d(a_i) - f_o(a_j)| \textrm{ otherwise }
+\]
+This becomes an aTSP with k+1 vertices which can be solved with Held-Karp in $\mathcal{O}(2^{k+1}(k+1)^2)=\mathcal{O}(2^{k}k^2)$
 
 \subsection*{ii)}
-Build queues for the floors with an operator to remove a set of vertices from a queue.\\
-Change slide 29 in Introduction to Exact Exponential-Time Algorithms slides to:\\
-If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$
+Build queues for the floors and define $Q\setminus A$ for a queue Q and set A as the queue Q without the elements in A. \\
+Change line 3 on slide 29 in Introduction to Exact Exponential-Time Algorithms slides to:\\
+If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$ \\
+Then, when extending the path to the next task, only those tasks that are first in their respective queue, are considered. \\
+The added calculation is $\mathcal{O}(k^2)$ so the whole algorithm is $\mathcal{O}(2^{k}k^4)$
 \subsection*{iii)}
 while(some floor is blocked)\\
 \indent flag = false\\
@@ -50,10 +58,14 @@ while(some floor is blocked)\\
 \indent\indent return false \\
 \indent endif\\
 endwhile \\
-return true
+return true\\
+\\
+The while-loop either moves one task from a queue or we have no solution. We have at most k+1 tasks in the queues in total so after the loop runs at most k+1 times no floor can be blocked. The while-evaluation costs $\mathcal{O}(r)$ and the for-loop runs at most r times where each loop costs $\mathcal{O}(1)$. Therefore the whole algorithm runs in $\mathcal{O}(kr)$ which is polynomial.
+
 \subsection*{iv)}
-Define operation blocked(f,Q) which returns true if floor f where exactly the AGVs in queue Q are on the floor is blocked, and false otherwise. \\
-If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$ and $ \lnot blocked(f_o(v), queue(f_o(v))\setminus(S \setminus \{v\})$
+Define function B(f,Q) which returns true if floor f is blocked when exactly the AGVs in queue Q are on the floor, and false otherwise. We change the line from $ii)$ to:\\
+If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \setminus \{v\})$ and $ \lnot B(f_o(v), queue(f_o(v))\setminus(S \setminus \{v\})$ \\
+That is, the AGV is not only first in its queue, but the floor is also not blocked by the queue.
 \subsection*{v)}
 
 \section{Maximum Flow by Scaling}
