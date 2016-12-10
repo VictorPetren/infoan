@@ -58,17 +58,23 @@ If $|S|>1$ then for all $v \neq s$, v is first in $queue(f_o(v))\setminus(S \set
 
 \section{Maximum Flow by Scaling}
 \subsection*{1)}
-A cut can be across at most $|E|$ edges, each edge has max capacity C so any cut has max capacity $C|E|$.
+We know that the upper limit of the number of edges in a cut is $|E|$ edges. We also know that the maximum capacity of any edge in $G$ is $C$, therefore the minimum capacity of any cut is at most $C|E|$.
 \subsection*{2)}
-Form a graph $G = (E',V), \forall e\in E': c(e)\geq K$ \\
-Find any path from s to t.
+Having stated that we need to find an augmenting path in the residual network, where the minimum capacity is $K$, we know that we can simply disregard all edges $(u,v)\in G_f$ where $c(u,v)<K$, as the capacity of a path is equal to the minimum capacity of any edge in the path.
+
+Using the Ford-Fulkerson method (bredth first search or depth first search) of finding an augmenting path in a residual network, we get that we can find it in $\mathcal{O}(|E|)$ time.
 \subsection*{3)}
+When initialized, $K$ is a power of $2$ and every time the outer while-loop executes $K$ is divided by $2$ and thus remains a power of $2$. In the last iteration of the while-loop, we will have that $K=2^0=1$, which means that the inner while-loop will find all augmenting paths in the residual network with capacity atleast $1$. Since we are assuming integer capacities for the edges, we will in the last iteration find all the remaining augmenting paths, augment flow along them and terminate.
+
+From the max-flow min-cut theorem (CLRS, theorem 26.6), we know that since there are no augmenting paths left after the last iteration, the resulting flow, must be a max-flow.
 \subsection*{4)}
-
+When the fourth line is executed (for $K\geq 1$), we know that there does not exists augmenting paths with capacity higher than or equal to $2K$. To see this, when $K$ is initialized, we have that $2K= 2\cdot 2^{\lfloor \lg C \rfloor} > 2\cdot 2^{\lg C -1} = C$, and for each consecutive iteration, we augment all paths $p$, where $K\leq capacity(p)<2K$, which maintains the invariant. Since the capacity of an augmenting path given by the edge along the path with minimum capacity and that
+the number of edges is bounded by $|E|$, we have that a minimum cut, will have atmost capacity $2K|E|$.
 \subsection*{5)}
+We know from 4) that the maximum flow can not increase by more than a total of $2K|E|$ when executing the inner while-loop. We also know that the amount of flow is increased by at least $K$ each time line 6 is executed. This means that the total amount of times that the loop can run is $2K|E|/K=\mathcal{O}(|E|)$ times.
 \subsection*{6)}
-\subsection*{7)}
-
+The inner loop can, by 2), be executed in $\mathcal{O}(|E|)$ time, which, by 5), can execute up to at most $\mathcal{O}(|E|)$ times, yielding a total of $\mathcal{O}(|E|^2)$ time. To see that the outer while-loop runs in $\mathcal{O}(\lg C)$ time, we note that $K = 2^{\lfloor \lg C \rfloor} \leq 2^{\lg C}=C$, which means that $\lg K \leq \lg C$. Since we are unable to divide $K$ by $2$ more than $\lg K$ times, before $K\leq 1$, then the outer loop must be executed at most
+$\mathcal{O}(\lg C)$ times, giving us a total run time of $\mathcal{O}(\lg C \cdot |E|^2)$.
 \section{Bonus/Research Question: NP-Completeness of lift scheduling}
 
 \end{document}
