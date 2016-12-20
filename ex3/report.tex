@@ -29,7 +29,7 @@
 
 \subsection*{i)}
 In the original TSP it doesn't matter how long the salesman stays in each town. Here the task at hand in each town is moving the robot between two floors and optimizing how to move between these tasks is the traveling problem. We define the distance between two tasks, i and j, as the time it takes to go from the final destination of i to the original position of j. Like the salesman can start in his hometown we start in a state which we simulate as a task with final destination 1. In this problem we don't care about going back to floor 1 after completing all the tasks so we define the distance from any task to the starting one as 0. \\
-We create a strongly connected digraph with vertices $a_1, a_2, ..., a_k$, one for each AGV, and one vertex $a_0$ representing the starting position with $f_o(a_0) = f_d(a_0) = 1$. The distances are formally defined like this: \\
+We create a complete digraph with vertices $a_1, a_2, ..., a_k$, one for each AGV, and one vertex $a_0$ representing the starting position with $f_o(a_0) = f_d(a_0) = 1$. The distances are formally defined like this: \\
 \[
 d(a_i, a_j) = 0 \textrm{ if } f_d(a_i) = f_o(a_j) \textrm{ or } j = 0
 \]
