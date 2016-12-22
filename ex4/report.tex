@@ -19,9 +19,9 @@
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \author{Sigurdur Oli Arnason (5961181) \\ Victor Petren Bach Hansen (5990025)}
-\title{Algorithms \& Networks \\ Exercise 3}
+\title{Algorithms \& Networks \\ Exercise 4}
 \lhead{Algorithms \& Networks}
-\rhead{Exercise 2}
+\rhead{Exercise 4}
 
 \begin{document}
 \maketitle
@@ -83,8 +83,8 @@ Now the problem can be solved by finding a minimum cost flow from $s$ to $t$, wh
 \includegraphics[width=\textwidth]{5}
 \subsection*{2}
 Say that $M_E$ is a b-matching with k edges for G. \\
-For every edge $(u,v)$ in $M_E$ we pick edges $(u_i,x_{e,u})$ and $(v_j,x_{e,v})$ for some $i,j$ where $1<i<b(u)$ and $1<j<b(v)$. These are $2k$ edges.\\
-For all edges that are not in $M_E$ we pick edge $(x_{e,u},x_{e,v})$. There are $|E| - k$ edges.\\
+For every edge $(u,v)$ in $M_E$ we pick edges $(u_i,x_{e,u})$ and $(v_j,x_{e,v})$ for some $i,j$ where $1<i<b(u)$ and $1<j<b(v)$. These are $2k$ such edges.\\
+For all edges that are not in $M_E$ we pick edge $(x_{e,u},x_{e,v})$. There are $|E| - k$ such edges.\\
 In total we then have $k+|E|$ edges and none of them share vertices so this is a matching for H.
 \subsection*{3}
 
